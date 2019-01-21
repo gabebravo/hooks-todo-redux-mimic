@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import { UserContext } from './index';
 
 export default function App() {
+  const value = useContext(UserContext);
+  
   return (
-    <div>
-      Hello World
-    </div>
+      <div>
+        <div>{`Hello, ${value}`}</div>
+      </div>
   )
 }
 
