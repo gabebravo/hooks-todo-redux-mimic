@@ -7,11 +7,15 @@ export default function TodoList() {
   const globalReducer = useContext(TodosContext);
   const { state, dispatch } = globalReducer;
 
-  console.log('state', state)
+  function renderTodos(todos){
+    return todos.map( todo => {
+      return <li>{todo.text}</li>
+    })
+  }
 
   return (
-    <div>
-      Hello World!
-    </div>
+    <ul>
+      { state && state.todos && renderTodos(state.todos) }
+    </ul>
   )
 }
