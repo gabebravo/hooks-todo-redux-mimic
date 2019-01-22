@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { TodosContext } from '../context';
+import shortid from 'shortid';
 
 // example of how to access the global reducer from anywhere
 export default function TodoList() {
@@ -9,7 +10,7 @@ export default function TodoList() {
 
   function renderTodos(todos){
     return todos.map( todo => {
-      return <li>{todo.text}</li>
+      return <li key={shortid.generate()}>{todo.text}</li>
     })
   }
 

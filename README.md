@@ -107,4 +107,5 @@ export default function App() {
   )
 }
 ```
-
+### `Complex example using context in combo with reducer for global state (redux substitute)`
+NOTE : see the code in the "use-context-reducer-combo" branch
