@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
-export const UserContext = React.createContext();
-const username = "Dave";
+const StateWrapper = ({ children }) => <div>{children}</div>
 
 ReactDOM.render(
-<UserContext.Provider value={username}>
-    <App />
-</UserContext.Provider>
+    <StateWrapper>
+        <App />
+    </StateWrapper>
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
