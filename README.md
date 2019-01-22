@@ -1,33 +1,110 @@
 
 ## React Hooks CRUD replacing Redux using useContext & useReducer
 
-### `section 1`
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `Basic context example`
+index.js >> 
+1. Break the createContext method off React
+2. Create a context object 
+3. Assign it some default value
+4. Wrap the root component in the context instance provider component
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+export const UserContext = React.createContext();
+const username = "Dave";
 
-### Code Splitting
+ReactDOM.render(
+<UserContext.Provider value={username}>
+    <App />
+</UserContext.Provider>
+, document.getElementById('root'));
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+App.js >> 
+1. Import the context
+2. wrap the render prop in the Consumer context instance component
+3. render the value
+```javascript
+import React from 'react';
+import { UserContext } from './index';
 
-### Analyzing the Bundle Size
+export default function App() {
+  return (
+      <div>
+        <UserContext.Consumer>
+            { value => <div>{`Hello, ${value}`}</div>}
+        </UserContext.Consumer>
+      </div>
+  )
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### `Basic context example using useContext hook`
+App.js >> 
+1. Import the context
+2. Destruct the useContext hook
+3. Pass it the imported context and assign the result to a value 
+4. Use the value
+```javascript
+import React, { useContext } from 'react';
+import { UserContext } from './index';
 
-### Making a Progressive Web App
+export default function App() {
+  const value = useContext(UserContext);
+  
+  return (
+      <div>
+        <div>{`Hello, ${value}`}</div>
+      </div>
+  )
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### `Basic reducer example using useReducer hook`
+App.js >> 
+1. Destruct the useReducer hook
+2. Set initial value(s) for the reducer state
+3. Define the Reducer (more on this later)
+4. Pass the reducer function and the initialState to the useReducer hook
+5. Destruct the array values returned form useReducer
+NOTE : [state, dispatch] >> state is the values / dispatch is the case type and/or a payload
+6. Call the dispatch on the click event, pass it type, use the switch/case in the reducer to execute logic
+     and update values to the reducer state by returning values 
+7. On the re-render the new values get picked up 
+```javascript
+import React, { useContext, useReducer } from 'react';
+import { UserContext } from './index';
+import { red } from 'ansi-colors';
 
-### Advanced Configuration
+const initialState = { count: 0 }
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+function reducer(state, action) {
+  switch(action.type){
+    case "increment":
+      return { count: state.count + 1 }
+    case "decrement":
+      return { count: state.count - 1 }
+    case "reset":
+      return initialState;
+    default:
+      return initialState;
+  }
+}
 
-### Deployment
+export default function App() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const value = useContext(UserContext);
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+  return (
+      <div>
+        <h4 className="m-1 p-1">{`Count: ${state.count}`}</h4>
+        <button className="border m-1 p-1" onClick={() => dispatch({ type: 'increment'}) }>Increment</button>
+        <button className="border m-1 p-1" onClick={() => dispatch({ type: 'decrement'}) }>Decrement</button>
+        <button className="border m-1 p-1" onClick={() => dispatch({ type: 'reset'}) }>Reset</button>
+      </div>
+  )
+}
+```
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
