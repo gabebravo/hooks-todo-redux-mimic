@@ -18,7 +18,8 @@ export default function TodoList() {
           <span style={ todo.complete ? styles.spanStylesComplete : styles.spanStyles } onClick={() => dispatch({ type: 'TOGGLE', payload: todo })}>{todo.text}</span>
           <div>
             <button style={{ ...styles.btnStyles, backgroundColor: 'darkcyan' }}>Edit</button>
-            <button style={{ ...styles.btnStyles, backgroundColor: 'firebrick' }}>Delete</button>
+            <button style={{ ...styles.btnStyles, backgroundColor: 'firebrick' }} 
+              onClick={() => dispatch({ type: 'DELETE', payload: todo })}>Delete</button>
           </div>
         </li>
       )
