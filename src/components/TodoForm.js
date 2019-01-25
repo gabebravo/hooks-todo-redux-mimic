@@ -11,8 +11,10 @@ export default function TodoForm() {
     useEffect( () => {
         if( state.currentTodo.text ){
             setField(state.currentTodo.text)
+        } else { // if the todo is deleted
+            setField('')
         }
-    }, [state.currentTodo.id]) // only run this when the id in the current todo changes === they clicked edit
+    }, [state.currentTodo.id]) // only run this when the id in the current todo changes
 
     function handleSubmit(type) {
         if( type === 'Add' ) {
