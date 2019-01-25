@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { TodosContext } from '../context'
 import shortid from 'shortid'
 
@@ -6,20 +6,32 @@ export default function TodoForm() {
   const globalReducer = useContext(TodosContext);
   const { state, dispatch } = globalReducer;
 
-    const [fieldsObj, setField] = useState({ add: '' });
+    const [fieldValue, setField] = useState('');
 
-    function handleSubmit() {
-        dispatch({ type: 'ADD', payload: { id: shortid.generate(), text: fieldsObj.add, complete: false } })
-        setField({ add: '' })
+    useEffect( () => {
+        if( state.currentTodo.text ){
+            setField(state.currentTodo.text)
+        }
+    }, [state.currentTodo.id]) // only run this when the id in the current todo changes === they clicked edit
+
+    function handleSubmit(type) {
+        if( type === 'Add' ) {
+            dispatch({ type: 'ADD', payload: { id: shortid.generate(), text: fieldValue, complete: false } })
+        } else {
+            dispatch({ type: 'EDIT', payload: { ...state.currentTodo, text: fieldValue } })
+            dispatch({ type: 'SET_EDIT_TODO', payload: {} })
+        }
+        setField('')
     }
 
   return (
     <div className="container max-w-md text-center font-mono">
-        <h1 className="text-bold">Add Todo</h1>
+        <h1 className="text-bold">{ state.currentTodo.text ? 'Edit' : 'Add' }</h1>
         <div className="flex justify-center p-5">
-            <input type="text" value={fieldsObj.add} onChange={ ev => setField({ ...fieldsObj, add: ev.target.value })}
+            <input type="text" value={fieldValue} onChange={ ev => setField( ev.target.value )}
                 className="border-black border-solid border-2"></input>
-            <button style={{ ...styles.btnStyles, backgroundColor: 'darkcyan' }} onClick={handleSubmit}>Submit</button>
+            <button style={{ ...styles.btnStyles, backgroundColor: 'darkcyan' }} 
+                onClick={() => handleSubmit(state.currentTodo.text ? 'Edit' : 'Add' )}>Submit</button>
         </div>
     </div>
   )
