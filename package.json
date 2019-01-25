@@ -1,5 +1,5 @@
 {
-  "name": "hooks-redux-substitute",
+  "name": "hooks-todo-redux-mimic",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
