@@ -13,7 +13,14 @@ export function todosReducer(state, action) {
         const newTodos = state.todos.filter( todo => todo.id !== payload.id )
         return { ...state, todos: newTodos }
       }
-      default:
+      case 'ADD': {
+        const newTodos = [...state.todos, payload]
+        return { ...state, todos: newTodos }
+      }
+      case 'SET_EDIT_TODO': {
+        return { ...state, currentTodo: payload }
+      }
+      default: 
         return state;
   }
 }

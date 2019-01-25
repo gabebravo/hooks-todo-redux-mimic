@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { TodosContext } from '../context';
+import TodoForm from './TodoForm'
 // SAVE THIS FOR WHERE TODOS ARE CREATED : import shortid from 'shortid'; shortid.generate()
 
 // example of how to access the global reducer from anywhere
@@ -17,9 +18,10 @@ export default function TodoList() {
         <li key={todo.id} style={styles.liStyles}>
           <span style={ todo.complete ? styles.spanStylesComplete : styles.spanStyles } onClick={() => dispatch({ type: 'TOGGLE', payload: todo })}>{todo.text}</span>
           <div>
-            <button style={{ ...styles.btnStyles, backgroundColor: 'darkcyan' }}>Edit</button>
+            <button style={{ ...styles.btnStyles, backgroundColor: 'darkcyan' }} 
+              onClick={ () => dispatch({ type: 'SET_EDIT_TODO', payload: todo }) }>Edit</button>
             <button style={{ ...styles.btnStyles, backgroundColor: 'firebrick' }} 
-              onClick={() => dispatch({ type: 'DELETE', payload: todo })}>Delete</button>
+              onClick={ () => dispatch({ type: 'DELETE', payload: todo })}>Delete</button>
           </div>
         </li>
       )
@@ -27,11 +29,14 @@ export default function TodoList() {
   }
 
   return (
-    <div className="container mx-auto max-w-md text-center font-mono">
-      <h1 className="text-bold">{title}</h1>
-      <ul className="list-reset text-white p-0">
-        { state && state.todos && renderTodos(state.todos) }
-      </ul>
+    <div className="flex justify-center">
+      <TodoForm />
+      <div className="container max-w-md text-center font-mono">
+        <h1 className="text-bold">{title}</h1>
+        <ul className="list-reset text-white p-0">
+          { state && state.todos && renderTodos(state.todos) }
+        </ul>
+      </div>
     </div>
   )
 }
