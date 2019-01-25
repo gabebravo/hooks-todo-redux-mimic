@@ -17,9 +17,9 @@ export default function TodoForm() {
     }, [state.currentTodo.id]) // only run this when the id in the current todo changes
 
     function handleSubmit(type) {
-        if( type === 'Add' ) {
+        if( type === 'Add' && fieldValue.length > 0 ) {
             dispatch({ type: 'ADD', payload: { id: shortid.generate(), text: fieldValue, complete: false } })
-        } else {
+        } else if ( type === 'Edit' ) {
             dispatch({ type: 'EDIT', payload: { ...state.currentTodo, text: fieldValue } })
             dispatch({ type: 'SET_EDIT_TODO', payload: {} })
         }
